@@ -1,5 +1,6 @@
 package com.fundamentosplatzi.springboot.fundamentos.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -18,13 +19,14 @@ public class User {
     @Column(length = 50)
     private String nombre;
 
-    @Column(length = 50)
+    @Column(length = 50, unique = true)
     private String email;
 
     private LocalDate cumpleanos;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonManagedReference
+    //@JsonManagedReference
+    @JsonBackReference
     private List<Post> posts = new ArrayList<>();
 
     public User() {
@@ -34,6 +36,10 @@ public class User {
         this.nombre = nombre;
         this.email = email;
         this.cumpleanos = cumpleanos;
+    }
+
+    public User(Long id) {
+        this.id = id;
     }
 
     public Long getId() {
